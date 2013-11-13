@@ -34,15 +34,64 @@ public class Search extends HttpServlet {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		String searchQuery = request.getParameter("SearchContent");
-		ResultSet r = null;
-		try {
-			r = DatabaseQuery.getResultSet("select sysdate from dual");
-			while (r.next()) {
-				out.println(r.getString(1));
+		boolean book = request.getParameter("book") != null;
+		boolean audio = request.getParameter("audio") != null;
+		boolean title = request.getParameter("title") != null;
+		boolean author = request.getParameter("author") != null;
+		boolean publication = request.getParameter("publication") != null;
+		if (searchQuery == null) searchQuery = "";
+		if (book) {
+			StringBuffer sb = new StringBuffer();
+			if (title)
+				sb.append("title like '%" + searchQuery + "%'");
+			if (author) {
+				if (sb.length() > 0) sb.append("and ");
+				sb.append("author like '%" + searchQuery + "%'");
 			}
-		} catch(Exception e) {
-			out.println("error");
-		}		
+			if (publication) {
+				if (sb.length() > 0) sb.append("and ");
+				sb.append("publication like '%" + searchQuery + "%'");
+			}
+			if (!title && !author && !publication)
+				sb.append("title like '%%'");
+			String query = "select * from books where " + sb.toString();
+			
+			try {
+				ResultSet r = DatabaseQuery.getResultSet(query);
+				while (r.next()) {
+						out.println(r.getString("title"));
+						out.println(r.getString("author"));
+				}
+			} catch(Exception e) {
+				out.println(e);
+			}
+		} else if (audio) {
+			StringBuffer sb = new StringBuffer();
+			if (title)
+				sb.append("title like '%" + searchQuery + "%'");
+			if (author) {
+				if (sb.length() > 0) sb.append("and ");
+				sb.append("author like '%" + searchQuery + "%'");
+			}
+			if (publication) {
+				if (sb.length() > 0) sb.append("and ");
+				sb.append("publication like '%" + searchQuery + "%'");
+			}
+			if (!title && !author && !publication)
+				sb.append("title like '%%'");
+			String query = "select * from audios where " + sb.toString();
+			
+			try {
+				ResultSet r = DatabaseQuery.getResultSet(query);
+				while (r.next()) {
+						out.println(r.getString("title"));
+						out.println(r.getString("author"));
+				}
+			} catch(Exception e) {
+				out.println(e);
+			}
+		}	
+		
 	}
 
 	/**
