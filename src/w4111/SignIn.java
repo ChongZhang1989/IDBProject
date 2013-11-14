@@ -34,7 +34,7 @@ public class SignIn extends HttpServlet {
 	
 	private boolean verify(String username, String password) throws SQLException {
 		ResultSet r = null;
-		r = DatabaseQuery.getResultSet("select * from users where username = '" 
+		r = DatabaseQuery.getResultSet("select * from users where id = '" 
 										+ username + "' and password = '"
 										+ password + "'");
 		return r.next();
