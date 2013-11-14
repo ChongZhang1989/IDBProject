@@ -97,9 +97,12 @@ public class Search extends HttpServlet {
 		//example of how to use ResultSet r
 		try {
 			while (r.next()) {
+				out.println(r.getString("bid"));
 				out.println(r.getString("title"));
 				out.println(r.getString("author"));
+				out.println(r.getString("publication"));
 			}
+			r.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
