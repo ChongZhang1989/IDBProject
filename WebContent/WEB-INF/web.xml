@@ -39,4 +39,14 @@
     <servlet-name>SignOut</servlet-name>
     <url-pattern>/SignOut</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Borrow</display-name>
+    <servlet-name>Borrow</servlet-name>
+    <servlet-class>w4111.Borrow</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Borrow</servlet-name>
+    <url-pattern>/Borrow</url-pattern>
+  </servlet-mapping>
 </web-app>
