@@ -40,6 +40,7 @@ public class Search extends HttpServlet {
 		boolean author = request.getParameter("author") != null;
 		boolean publication = request.getParameter("publication") != null;
 		if (searchQuery == null) searchQuery = "";
+		ResultSet r = null;
 		if (book) {
 			StringBuffer sb = new StringBuffer();
 			if (title)
@@ -57,11 +58,7 @@ public class Search extends HttpServlet {
 			String query = "select * from books where " + sb.toString();
 			
 			try {
-				ResultSet r = DatabaseQuery.getResultSet(query);
-				while (r.next()) {
-						out.println(r.getString("title"));
-						out.println(r.getString("author"));
-				}
+				r = DatabaseQuery.getResultSet(query);
 			} catch(Exception e) {
 				out.println(e);
 			}
@@ -82,15 +79,22 @@ public class Search extends HttpServlet {
 			String query = "select * from audios where " + sb.toString();
 			
 			try {
-				ResultSet r = DatabaseQuery.getResultSet(query);
-				while (r.next()) {
-						out.println(r.getString("title"));
-						out.println(r.getString("author"));
-				}
+				r = DatabaseQuery.getResultSet(query);
 			} catch(Exception e) {
 				out.println(e);
 			}
-		}	
+		}
+		
+		//example of how to use ResultSet r
+		try {
+			while (r.next()) {
+				out.println(r.getString("title"));
+				out.println(r.getString("author"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
