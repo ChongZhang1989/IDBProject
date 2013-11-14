@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class Search
@@ -33,6 +34,13 @@ public class Search extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
+		HttpSession session = request.getSession();
+		if (session == null || session.getAttribute("username") == null) {
+			out.println("You haven't signed in yet!");
+		} else {
+			out.println("Welcome " + session.getAttribute("username"));
+			out.println("<a href = \"SignOut\">Sign Out</a>");
+		}
 		String searchQuery = request.getParameter("SearchContent");
 		boolean book = request.getParameter("book") != null;
 		boolean audio = request.getParameter("audio") != null;
@@ -40,6 +48,7 @@ public class Search extends HttpServlet {
 		boolean author = request.getParameter("author") != null;
 		boolean publication = request.getParameter("publication") != null;
 		if (searchQuery == null) searchQuery = "";
+		if (!book && !audio) book = audio = true;
 		ResultSet r = null;
 		if (book) {
 			StringBuffer sb = new StringBuffer();
