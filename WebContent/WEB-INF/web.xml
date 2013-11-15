@@ -49,4 +49,34 @@
     <servlet-name>BorrowBook</servlet-name>
     <url-pattern>/BorrowBook</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>PersonalInfo</display-name>
+    <servlet-name>PersonalInfo</servlet-name>
+    <servlet-class>w4111.PersonalInfo</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PersonalInfo</servlet-name>
+    <url-pattern>/PersonalInfo</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Return</display-name>
+    <servlet-name>Return</servlet-name>
+    <servlet-class>w4111.Return</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Return</servlet-name>
+    <url-pattern>/Return</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>PayFees</display-name>
+    <servlet-name>PayFees</servlet-name>
+    <servlet-class>w4111.PayFees</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PayFees</servlet-name>
+    <url-pattern>/PayFees</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -38,6 +38,8 @@ public class BorrowBook extends HttpServlet {
 		ResultSet r = null;
 		String [] bid = request.getParameterValues("bid");
 		String [] aid = request.getParameterValues("aid");
+		if (bid == null) bid = new String [0];
+		if (aid == null) aid = new String [0];
 		String lid = request.getParameter("lid");
 		//test whether the request is legal
 		try {

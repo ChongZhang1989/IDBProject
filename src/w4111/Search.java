@@ -39,10 +39,17 @@ public class Search extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
+		
+//		SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+//		Date date = new Date();
+//		out.println(new Date(df.format(date)));
+//		
 		HttpSession session = request.getSession();
 		if (session == null || session.getAttribute("username") == null) {
 			out.println("You haven't signed in yet!");
 		} else {
+			out.println("Welcome " + session.getAttribute("name"));
+			out.println("<a href = \"PersonalInfo\">Personal Information</a>");
 			out.println("<a href = \"SignOut\">Sign Out</a>");
 		}
 		
