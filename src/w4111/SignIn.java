@@ -34,7 +34,7 @@ public class SignIn extends HttpServlet {
 	
 	private boolean verify(String username, String password) throws SQLException {
 		ResultSet r = null;
-		r = DatabaseQuery.getResultSet("select * from users where username = '" 
+		r = DatabaseQuery.getResultSet("select * from users where id = '" 
 										+ username + "' and password = '"
 										+ password + "'");
 		return r.next();
@@ -53,6 +53,9 @@ public class SignIn extends HttpServlet {
 			if (verify(username, password)) {
 				session.setAttribute("username", username);
 				session.setAttribute("password", password);
+				ResultSet r = DatabaseQuery.getResultSet("select * from users where id = " + username);
+				r.next();
+				session.setAttribute("name", r.getString("username"));
 				session.setMaxInactiveInterval(30);
 				response.sendRedirect("start.html");
 			} else {

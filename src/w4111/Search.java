@@ -6,6 +6,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -34,13 +39,20 @@ public class Search extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
+		
+//		SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+//		Date date = new Date();
+//		out.println(new Date(df.format(date)));
+//		
 		HttpSession session = request.getSession();
 		if (session == null || session.getAttribute("username") == null) {
 			out.println("You haven't signed in yet!");
 		} else {
-			out.println("Welcome " + session.getAttribute("username"));
+			out.println("Welcome " + session.getAttribute("name"));
+			out.println("<a href = \"PersonalInfo\">Personal Information</a>");
 			out.println("<a href = \"SignOut\">Sign Out</a>");
 		}
+		
 		String searchQuery = request.getParameter("SearchContent");
 		boolean book = request.getParameter("book") != null;
 		boolean audio = request.getParameter("audio") != null;
@@ -71,7 +83,42 @@ public class Search extends HttpServlet {
 			} catch(Exception e) {
 				out.println(e);
 			}
-		} else if (audio) {
+			out.println("<form action=BorrowBook method=get>");
+			out.println("<table>");
+			try {
+				while (r.next()) {
+					out.println("<tr>");
+					out.println("<td>");
+					out.println(r.getString("bid"));
+					out.println("</td>");
+					out.println("<td>");
+					out.println(r.getString("title"));
+					out.println("</td>");
+					out.println("<td>");
+					out.println(r.getString("author"));
+					out.println("</td>");
+					out.println("<td>");
+					out.println(r.getString("publication"));
+					out.println("</td>");
+					out.println("<td>");
+					out.println(r.getString("quantity"));
+					out.println("</td>");
+					out.println("<td>");
+					out.println(r.getString("remaining"));
+					out.println("</td>");
+					out.println("<td>");
+					if (Integer.parseInt(r.getString("remaining")) > 0)
+						out.println("<input type=\"checkbox\" name=\"bid\"" + "value=\"" + r.getString("bid") + "\">");
+					out.println("</td>");
+					out.println("</tr>");
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			out.println("</table>");
+		}
+		if (audio) {
 			StringBuffer sb = new StringBuffer();
 			if (title)
 				sb.append("title like '%" + searchQuery + "%'");
@@ -92,35 +139,6 @@ public class Search extends HttpServlet {
 			} catch(Exception e) {
 				out.println(e);
 			}
-		}
-		
-		//example of how to use ResultSet r
-		if (book) {
-			out.println("<table>");
-			try {
-				while (r.next()) {
-					out.println("<tr>");
-					out.println("<td>");
-					out.println(r.getString("bid"));
-					out.println("</td>");
-					out.println("<td>");
-					out.println(r.getString("title"));
-					out.println("</td>");
-					out.println("<td>");
-					out.println(r.getString("author"));
-					out.println("</td>");
-					out.println("<td>");
-					out.println(r.getString("publication"));
-					out.println("</td>");
-					out.println("</tr>");
-				}
-				r.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			out.println("</table>");
-		} else if (audio) {
 			out.println("<table>");
 			try {
 				while (r.next()) {
@@ -137,16 +155,34 @@ public class Search extends HttpServlet {
 					out.println("<td>");
 					out.println(r.getString("publication"));
 					out.println("</td>");
+					out.println("<td>");
+					out.println(r.getString("quantity"));
+					out.println("</td>");
+					out.println("<td>");
+					out.println(r.getString("remaining"));
+					out.println("</td>");
+					out.println("<td>");
+					if (Integer.parseInt(r.getString("remaining")) > 0)
+						out.println("<input type=\"checkbox\" name=\"aid\"" + "value=\"" + r.getString("aid") + "\">");
+					out.println("</td>");
 					out.println("</tr>");
 				}
-				r.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			out.println("</table>");
 		}
-
+		out.println("Please input the ID of the librarian who serves you:<br>");
+		out.println("<input type='text' name='lid'><br>");
+		out.println("<input type=submit name=Borrow value=Borrow>");
+		out.println("</form>");
+		try {
+			r.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
